@@ -1,0 +1,5 @@
+.env
+__pycache__
+src/tech_paws/modules_registry/settings/local.py
+db.sqlite3
+var/*
