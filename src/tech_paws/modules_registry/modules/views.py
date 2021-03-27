@@ -32,12 +32,10 @@ def create_version_meta(request):
         else:
             dependencies = []
 
-        print(dependencies)
-
         ignore = {"id", "dependencies"}
         fields = set(serializer.validated_data) - ignore
         module_version = ModuleVersion.objects.create(
-            module = module,
+            module=module,
             **{key: serializer.validated_data[key] for key in fields}
         )
 
@@ -57,9 +55,41 @@ def update_version_meta(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     id = serializer.validated_data["id"]
-    module = get_object_or_404(Module, id=id)
+    version = serializer.validated_data["version"]
+
+    with transaction.atomic():
+        module = Module.objects.filter(id=id)
+        
+        if module.count() == 0:
+            raise ValidationError(f"module with id = {id} couldn't find")
+
+        module = module.first()
+        module_version = ModuleVersion.objects.filter(version=version, module=module)
+
+        if module_version.count() == 0:
+            raise ValidationError(f"module with version == {version} couldn't find")
+
+        if "dependencies" in serializer.validated_data:
+            dependencies = _resolve_dependencies(module, serializer.validated_data["dependencies"])
+        else:
+            dependencies = []
+
+        ignore = {"id", "dependencies"}
+        fields = set(serializer.validated_data) - ignore
+        ModuleVersion.objects \
+            .filter(version=version, module=module) \
+            .update(**{key: serializer.validated_data[key] for key in fields})
+
+        module_version = ModuleVersion.objects.get(version=version, module=module)
+        module_version.dependencies.clear()
+
+        for dep in dependencies:
+            module_version.dependencies.add(dep)
+
+        module_version.save()
 
     return Response({}, status=status.HTTP_200_OK)
+
 
 
 def _resolve_dependencies(module, dependencies):
