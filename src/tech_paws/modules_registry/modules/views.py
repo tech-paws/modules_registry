@@ -25,7 +25,7 @@ def create_version_meta(request):
         module_version = ModuleVersion.objects.filter(version=version, module=module)
 
         if module_version.count() > 0:
-            raise ValidationError('module version already exists')
+            raise ValidationError(f"module version == {version} already exists")
 
         if "dependencies" in serializer.validated_data:
             dependencies = _resolve_dependencies(module, serializer.validated_data["dependencies"])
@@ -69,7 +69,7 @@ def _resolve_dependencies(module, dependencies):
         dep = dep_str.split("==")
         
         if len(dep) != 2:
-            raise ValidationError('invalid dependency format')
+            raise ValidationError(f"invalid dependency format: {dep_str}")
 
         id, version = dep
 
@@ -79,7 +79,7 @@ def _resolve_dependencies(module, dependencies):
             raise ValidationError(f"dependency {dep_str} couldn't find")
 
         if module_version.first().module.id == module.id:
-            raise ValidationError(f"cand depend on youself")
+            raise ValidationError(f"can't depend on youself")
 
         result.append(module_version.first())
 
