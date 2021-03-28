@@ -26,6 +26,21 @@ class ModuleVersion(models.Model):
     homepage = models.URLField(blank=True)
     repository = models.URLField(blank=True)
     documentation = models.URLField(blank=True)
+    published = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.module.id} - {self.name} - {self.version}"
+
+
+class ModuleLib(models.Model):
+    class Meta:
+        unique_together = ["module_version", "name", "os", "arch"]
+
+    module_version = models.ForeignKey(ModuleVersion, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    os = models.CharField(max_length=255, default="linux")
+    arch = models.CharField(max_length=40, default="x86_64")
+    uploaded = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.os} ({self.arch}) - {self.name} ({self.module_version.module.id} - {self.module_version.version})"

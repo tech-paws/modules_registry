@@ -5,6 +5,16 @@ class StringListField(serializers.ListField):
     child = serializers.CharField()
 
 
+class PlatformSerializer(serializers.Serializer):
+    os = serializers.CharField(max_length=60)
+    arch = serializers.CharField(max_length=60)
+    libs = StringListField()
+
+
+class PlatformsListSerializer(serializers.ListField):
+    child = PlatformSerializer()
+
+
 class UpdateVersionSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=60)
     dependencies = StringListField(allow_null=True, required=False)
@@ -14,6 +24,7 @@ class UpdateVersionSerializer(serializers.Serializer):
     homepage = serializers.URLField(allow_null=True, required=False)
     repository = serializers.URLField(allow_null=True, required=False)
     documentation = serializers.URLField(allow_null=True, required=False)
+    platforms = PlatformsListSerializer()
 
 
 class CreateVersionSerializer(serializers.Serializer):
@@ -25,3 +36,4 @@ class CreateVersionSerializer(serializers.Serializer):
     homepage = serializers.URLField(allow_null=True, required=False)
     repository = serializers.URLField(allow_null=True, required=False)
     documentation = serializers.URLField(allow_null=True, required=False)
+    platforms = PlatformsListSerializer()
