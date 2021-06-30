@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tech_paws_modules_registory.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tech_paws.modules_registry.settings.local')
 
 application = get_wsgi_application()
