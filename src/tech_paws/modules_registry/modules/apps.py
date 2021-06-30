@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ModulesConfig(AppConfig):
-    name = 'modules'
+    name = 'tech_paws.modules_registry.modules'

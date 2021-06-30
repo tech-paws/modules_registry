@@ -10,7 +10,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'tech_paws.modules_registry.modules',
+    'tech_paws.modules_registry.modules.ModulesConfig',
 ]
 
 MIDDLEWARE = [
