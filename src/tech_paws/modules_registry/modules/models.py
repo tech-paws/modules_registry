@@ -18,7 +18,6 @@ class ModuleVersion(models.Model):
         unique_together = ['module', 'version']
 
     module = models.ForeignKey(Module, related_name="module", on_delete=models.CASCADE)
-    dependencies = models.ManyToManyField("ModuleVersion", blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     version = models.CharField(max_length=40)
@@ -26,7 +25,6 @@ class ModuleVersion(models.Model):
     homepage = models.URLField(blank=True, null=True)
     repository = models.URLField(blank=True, null=True)
     documentation = models.URLField(blank=True, null=True)
-    published = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.module.id} - {self.name} - {self.version}"

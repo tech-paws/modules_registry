@@ -17,7 +17,6 @@ class PlatformsListSerializer(serializers.ListField):
 
 class UpdateVersionSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=60)
-    dependencies = StringListField(allow_null=True, required=False)
     name = serializers.CharField(max_length=100, allow_null=True, required=False)
     description = serializers.CharField(allow_null=True, required=False)
     version = serializers.CharField()
@@ -29,7 +28,6 @@ class UpdateVersionSerializer(serializers.Serializer):
 
 class CreateVersionSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=60)
-    dependencies = StringListField(allow_null=True, required=False)
     name = serializers.CharField(max_length=100)
     description = serializers.CharField()
     version = serializers.CharField()

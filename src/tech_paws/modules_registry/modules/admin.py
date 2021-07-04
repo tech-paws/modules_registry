@@ -3,13 +3,13 @@ from tech_paws.modules_registry.modules.models import Module, ModuleVersion, Mod
 
 
 class LibAdmin(admin.ModelAdmin):
-    list_display = ('module_version', 'name', 'uploaded',)
-    list_filter = ('uploaded', 'module_version',)
+    list_display = ('module_version', 'name', 'os', 'arch', 'uploaded',)
+    list_filter = ('uploaded', 'module_version', 'os', 'arch')
 
 
 class VersionAdmin(admin.ModelAdmin):
-    list_display = ('module', 'name', 'version', 'published',)
-    list_filter = ('module__id', 'published',)
+    list_display = ('module', 'name', 'version',)
+    list_filter = ('module__id',)
 
 
 admin.site.register(Module)
