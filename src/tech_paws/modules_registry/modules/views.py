@@ -11,16 +11,22 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import FileUploadParser
 
-from tech_paws.modules_registry.modules.serializers import UpdateVersionSerializer, CreateVersionSerializer
+from tech_paws.modules_registry.modules.serializers import UpdateVersionSerializer, CreateVersionSerializer, ModuleLibSerializer
 from tech_paws.modules_registry.modules.models import Module, ModuleVersion, ModuleLib
 
 
 @api_view(["GET"])
-def module_repo(request, module_id, version):
+def module_meta(request, module_id, version):
     with transaction.atomic():
         module = get_object_or_404(Module, id=module_id)
         module_version = get_object_or_404(ModuleVersion, module=module, version=version)
-        return Response({"repo": module_version.repository})
+        module_libs = ModuleLib.objects.filter(uploaded=True, module_version=module_version)
+        serializer = ModuleLibSerializer(module_libs, many=True)
+
+        return Response({
+            "repo": module_version.repository,
+            "libs": serializer.data
+        })
 
 
 @api_view(["POST"])

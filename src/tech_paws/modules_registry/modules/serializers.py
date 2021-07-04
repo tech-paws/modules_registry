@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from tech_paws.modules_registry.modules.models import ModuleLib
 
 
 class StringListField(serializers.ListField):
@@ -35,3 +36,9 @@ class CreateVersionSerializer(serializers.Serializer):
     repository = serializers.URLField(allow_null=True, required=False)
     documentation = serializers.URLField(allow_null=True, required=False)
     platforms = PlatformsListSerializer()
+
+
+class ModuleLibSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModuleLib
+        fields = ['name', 'os', 'arch']
