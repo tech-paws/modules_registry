@@ -23,9 +23,9 @@ class ModuleVersion(models.Model):
     description = models.TextField()
     version = models.CharField(max_length=40)
     create_datetime = models.DateTimeField(auto_now_add=True)
-    homepage = models.URLField(blank=True)
-    repository = models.URLField(blank=True)
-    documentation = models.URLField(blank=True)
+    homepage = models.URLField(blank=True, null=True)
+    repository = models.URLField(blank=True, null=True)
+    documentation = models.URLField(blank=True, null=True)
     published = models.BooleanField(default=False)
 
     def __str__(self):
