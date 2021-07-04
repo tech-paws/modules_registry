@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('publish', modules_views.publis_version),
     path('upload/<module_id>/<version>/<os>/<arch>/<lib>', modules_views.upload_lib),
+    path('repo/<module_id>/<version>', modules_views.module_repo),
 ]
 
 #if settings.DEBUG:

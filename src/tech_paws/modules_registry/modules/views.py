@@ -15,6 +15,14 @@ from tech_paws.modules_registry.modules.serializers import UpdateVersionSerializ
 from tech_paws.modules_registry.modules.models import Module, ModuleVersion, ModuleLib
 
 
+@api_view(["GET"])
+def module_repo(request, module_id, version):
+    with transaction.atomic():
+        module = get_object_or_404(Module, id=module_id)
+        module_version = get_object_or_404(ModuleVersion, module=module, version=version)
+        return Response({"repo": module_version.repository})
+
+
 @api_view(["POST"])
 def upload_lib(request, module_id, version, os, arch, lib):
     with transaction.atomic():
